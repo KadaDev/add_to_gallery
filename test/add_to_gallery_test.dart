@@ -28,7 +28,6 @@ void main() {
     expect(
       await AddToGallery.addToGallery(
         originalFile: originalFile,
-        albumName: 'Add to Gallery',
         deleteOriginalFile: true,
       ),
       true,
@@ -40,7 +39,6 @@ void main() {
     expect(
       await AddToGallery.addToGallery(
         originalFile: originalFile,
-        albumName: 'Add to Gallery',
         deleteOriginalFile: true,
       ),
       false,

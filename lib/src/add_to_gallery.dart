@@ -15,9 +15,6 @@ class AddToGallery {
     /// The original file to copy to the gallery
     required File originalFile,
 
-    /// Name of the album to save to, the album is created if necessary
-    required String albumName,
-
     /// Should we delete the original file after saving?
     required bool deleteOriginalFile,
   }) async {
@@ -35,7 +32,6 @@ class AddToGallery {
       <String, dynamic>{
         'type': filetype,
         'path': copiedFile.path,
-        'album': albumName,
       },
     );
     // Nothing? Probably Android, return the copied file

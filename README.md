@@ -16,14 +16,13 @@ Add `add_to_gallery` as a [dependency in your pubspec.yaml file](https://flutter
 
 You need the following permissions in your app:
 
-* **iOS**
-  * `NSPhotoLibraryUsageDescription`
-  * This allows the plugin to use the [PHPhotoLibrary](https://developer.apple.com/documentation/photokit/phphotolibrary/) APIs to add assets to the user's photo library.
-* **Android**
-  * `READ_EXTERNAL_STORAGE`
-  * `WRITE_EXTERNAL_STORAGE`
-  * If you target Android 10, you will also need the [requestLegacyExternalStorage="true"](https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app) in your AndroidManifest.
-
+- **iOS**
+  - `NSPhotoLibraryUsageDescription`
+  - This allows the plugin to use the [PHPhotoLibrary](https://developer.apple.com/documentation/photokit/phphotolibrary/) APIs to add assets to the user's photo library.
+- **Android**
+  - `READ_EXTERNAL_STORAGE`
+  - `WRITE_EXTERNAL_STORAGE`
+  - If you target Android 10, you will also need the [requestLegacyExternalStorage="true"](https://developer.android.com/training/data-storage/use-cases#opt-out-in-production-app) in your AndroidManifest.
 
 This plugin **does not** manage permissions for you. _By excluding permissions from our plugin we have created a simple, reliable plugin._
 
@@ -36,7 +35,6 @@ There's only one method. It copies the source file to the gallery and returns th
 ```dart
 File file = await AddToGallery.addToGallery(
   originalFile: File('/Some/Media/Path.jpg'),
-  albumName: 'My Awesome App',
   deleteOriginalFile: false,
 );
 print("Savd to gallery with Path: ${file.path}");
@@ -57,7 +55,6 @@ try {
   // Add to the gallery
   File file = await AddToGallery.addToGallery(
     originalFile: File('/Some/Media/Path.jpg'),
-    albumName: 'My Awesome App',
     deleteOriginalFile: true,
   );
   print("Savd to gallery with Path: ${file.path}");
@@ -70,11 +67,11 @@ try {
 
 The [example app](/example) shows a few more edge-cases in action.
 
-* Uses [permission_handler](https://pub.dev/packages/permission_handler) to request permissions
-* Uses [image_picker](https://pub.dev/packages/image_picker) to take photos with the camera
-* Copies assets to the gallery
-* Uses [shared_preferences](https://pub.dev/packages/shared_preferences) to save and read the file path locally
-  * _This shows that the assets are still accessible between reboots_
+- Uses [permission_handler](https://pub.dev/packages/permission_handler) to request permissions
+- Uses [image_picker](https://pub.dev/packages/image_picker) to take photos with the camera
+- Copies assets to the gallery
+- Uses [shared_preferences](https://pub.dev/packages/shared_preferences) to save and read the file path locally
+  - _This shows that the assets are still accessible between reboots_
 
 ## Credits & Comparison
 
@@ -134,11 +131,6 @@ Big thanks to the [Tecocraft LTD team](https://www.tecocraft.co.uk/) for Android
     <td>Remote Files</td>
     <td>Automatically downloads files that start with <strong>http</strong></td>
     <td>Does not download files that start with <strong>http</strong></td>
-  </tr>
-  <tr>
-    <td>Album Name</td>
-    <td>Optional with default values</td>
-    <td>Is required</td>
   </tr>
   <tr>
     <td>Image Manipulation</td>

@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:add_to_gallery/add_to_gallery.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,8 +8,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-final String _albumName = 'Add to Gallery';
 
 void main() => runApp(MyApp());
 
@@ -86,18 +84,11 @@ class SaveAsset extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           try {
+            await assertPermissions();
+
             File localFile = await _copyAssetLocally(assetPath);
-            // iOS
-            if (!await Permission.photos.request().isGranted) {
-              throw ('Permission Required');
-            }
-            // Android (v9 and below)
-            if (!await Permission.storage.request().isGranted) {
-              throw ('Permission Required');
-            }
             File file = await AddToGallery.addToGallery(
               originalFile: localFile,
-              albumName: _albumName,
               deleteOriginalFile: true,
             );
             await _saveGalleryPath(file.path);
@@ -136,21 +127,13 @@ class SaveImage extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           try {
-            PickedFile? image =
-                await ImagePicker().getImage(source: ImageSource.camera);
+            XFile? image =
+                await ImagePicker().pickImage(source: ImageSource.camera);
             if (image != null) {
+              await assertPermissions();
               File cameraFile = File(image.path);
-              // iOS
-              if (!await Permission.photos.request().isGranted) {
-                throw ('Permission Required');
-              }
-              // Android (v9 and below)
-              if (!await Permission.storage.request().isGranted) {
-                throw ('Permission Required');
-              }
               File file = await AddToGallery.addToGallery(
                 originalFile: cameraFile,
-                albumName: _albumName,
                 deleteOriginalFile: true,
               );
               await _saveGalleryPath(file.path);
@@ -173,6 +156,26 @@ class SaveImage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// Throws an error if the appropriate permissions aren't granted
+Future<void> assertPermissions() async {
+  if (Platform.isIOS) {
+    // iOS
+    if (!await Permission.photosAddOnly.request().isGranted) {
+      throw ('Permission Required');
+    }
+  }
+  if (Platform.isAndroid) {
+    final androidInfo = await DeviceInfoPlugin().androidInfo;
+    // Android 10 and up doesn't need permissions
+    if (androidInfo.version.sdkInt < 29) {
+      // Android (v9 and below)
+      if (!await Permission.storage.request().isGranted) {
+        throw ('Permission Required');
+      }
+    }
   }
 }
 
