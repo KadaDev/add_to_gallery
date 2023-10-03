@@ -9,22 +9,21 @@ environment:
   flutter: ">=2.0.0"
 
 module:
- androidX: true
+  androidX: true
 
 dependencies:
   flutter:
     sdk: flutter
   path_provider: ^2.0.2
-  http: ^0.13.3
+  http: ^1.1.0
   path: ^1.8.0
-  uuid: ^3.0.4
+  uuid: ^4.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-
   plugin:
     platforms:
       android:
