@@ -6,3 +6,6 @@
 .idea/
 
 build/
+
+# fvm
+.fvm/flutter_sdk
